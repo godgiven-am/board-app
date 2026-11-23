@@ -1,26 +1,29 @@
-import { Suspense } from 'react';
-import { createClient } from '@/utils/supabase/server'
-import { cookies } from 'next/headers'
+import { Suspense } from "react";
+import { cookies } from "next/headers";
+import { createClient } from "@/utils/supabase/server";
+import { logout } from "@/app/auth/actions";
+import { Button } from "@/components/ui/button";
 
-async function TodoList() {
+async function UserBar() {
+  const supabase = createClient(await cookies());
+  const { data } = await supabase.auth.getClaims();
 
-  const cookieStore = await cookies()
-  const supabase = createClient(cookieStore)
-
-  const { data, error } = await supabase.from('todos').select('*');
-
-  if (error) {
-    return <pre>Ошибка: {error.message}</pre>;
-  }
-
-  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+  return (
+    <header className="flex items-center justify-between border-b p-4">
+      <span className="text-sm">{data?.claims?.email}</span>
+      <form action={logout}>
+        <Button type="submit" variant="outline" size="sm">Выйти</Button>
+      </form>
+    </header>
+  );
 }
-
 
 export default function Page() {
   return (
-    <Suspense fallback={<p>Загрузка…</p>}>
-      <TodoList />
-    </Suspense>
+    <>
+      <Suspense fallback={null}>
+        <UserBar />
+      </Suspense>
+    </>
   );
 }
