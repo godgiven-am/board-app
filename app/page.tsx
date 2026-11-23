@@ -1,7 +1,17 @@
-import { Button } from "@/components/ui/button";
+import { createClient } from '@/utils/supabase/server'
+import { cookies } from 'next/headers'
 
-export default function Home() {
+export default async function Page() {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
+
+  const { data: todos } = await supabase.from('todos').select()
+
   return (
-    <Button size='lg' variant='secondary'>Click</Button>
-  );
+    <ul>
+      {todos?.map((todo) => (
+        <li key={todo.id}>{todo.name}</li>
+      ))}
+    </ul>
+  )
 }
