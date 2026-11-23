@@ -1,10 +1,14 @@
 import { Suspense } from "react";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { logout } from "@/app/auth/actions";
+
+import { Loading } from "@/components/ui/Loading";
 import { Button } from "@/components/ui/button";
 
 async function UserBar() {
+  await connection();
   const supabase = createClient(await cookies());
   const { data } = await supabase.auth.getClaims();
 
@@ -21,7 +25,7 @@ async function UserBar() {
 export default function Page() {
   return (
     <>
-      <Suspense fallback={null}>
+      <Suspense fallback={<Loading/>}>
         <UserBar />
       </Suspense>
     </>
