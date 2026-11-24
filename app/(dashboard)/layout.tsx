@@ -2,6 +2,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import React from "react";
 import { AppSidebar } from "./_components/app-sidebar";
 import { Navbar } from "./_components/navbar";
+import { AddButton } from "./_components/add-button";
 
 interface LayoutDashboardProps {
   children: React.ReactNode;
@@ -10,7 +11,9 @@ interface LayoutDashboardProps {
 const LayoutDashboard: React.FC<LayoutDashboardProps> = ({ children }) => {
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar>
+        <AddButton />
+      </AppSidebar>
       <SidebarInset className="min-w-0">
         <Navbar />
         <div className="flex-1 p-4 md:p-6">{children}</div>

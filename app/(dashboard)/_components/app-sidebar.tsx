@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/sidebar";
 import React from "react";
 
-export function AppSidebar({ children }: { children: React.ReactNode }) {
+export function AppSidebar({ children }: { children?: React.ReactNode }) {
   return (
     <Sidebar>
       <SidebarHeader>Board App</SidebarHeader>
